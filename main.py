@@ -110,6 +110,12 @@ def is_element_hidden(driver, element_id):
 def save_to_csv(data):
     csv_file_path = "output.csv"
 
+    # Check if the file already exists
+    count = 0
+    while os.path.exists(csv_file_path):
+        count += 1
+        csv_file_path = f"output ({count}).csv"
+
     with open(csv_file_path, "w", newline="", encoding="utf-8-sig") as file:
         writer = csv.writer(file)
         writer.writerow(["City", "District", "Town"])
