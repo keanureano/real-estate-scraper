@@ -16,8 +16,7 @@ def main():
     dataset = get_city_district_town_dataset(driver)
 
     save_to_csv(dataset)
-
-    input("Press Enter to close the browser...")
+    
     driver.quit()
 
 
