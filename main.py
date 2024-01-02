@@ -16,7 +16,7 @@ def main():
     dataset = get_city_district_town_dataset(driver)
 
     save_to_csv(dataset)
-    
+
     driver.quit()
 
 
@@ -26,9 +26,10 @@ def get_city_district_town_dataset(driver):
 
     select = Select(cities_element)
 
-    for city_option in select.options[1:]:
+    for city_option in select.options[1:25]:
         city_name = city_option.text
-        print(f"Selecting city: {city_name}")
+        city_value = city_option.get_attribute("value")
+        print(f"Selecting city: {city_value} {city_name}")
 
         city_option.click()
 
@@ -38,18 +39,33 @@ def get_city_district_town_dataset(driver):
         if district_id_hidden and not town_id_hidden:
             # Case: districtId is hidden, townId is visible
             towns = get_town(driver)
-            dataset.extend([(city_name, "", town) for town in towns])
+            dataset.extend(
+                [
+                    (city_value, city_name, "", "", town_value, town_name)
+                    for town_value, town_name in towns
+                ]
+            )
 
         elif not district_id_hidden:
             # Case: districtId is visible
             districts_with_towns = get_district_town(driver)
             dataset.extend(
-                [(city_name, district, town) for district, town in districts_with_towns]
+                [
+                    (
+                        city_value,
+                        city_name,
+                        district_value,
+                        district_name,
+                        town_value,
+                        town_name,
+                    )
+                    for district_value, district_name, town_value, town_name in districts_with_towns
+                ]
             )
 
         else:
             # Case: Both districtId and townId are hidden
-            dataset.append((city_name, "", ""))
+            dataset.append((city_value, city_name, "", "", "", ""))
 
     return dataset
 
@@ -61,12 +77,16 @@ def get_district_town(driver):
 
     for district_option in district_select.options[1:]:
         district_name = district_option.text
-        print(f"Selecting district: {district_name}")
+        district_value = district_option.get_attribute("value")
+        print(f"Selecting district: {district_value} {district_name}")
 
         district_option.click()
 
         towns = get_town(driver)
-        districts_with_towns.extend((district_name, town) for town in towns)
+        districts_with_towns.extend(
+            (district_value, district_name, town_value, town_name)
+            for town_value, town_name in towns
+        )
 
     return districts_with_towns
 
@@ -74,7 +94,10 @@ def get_district_town(driver):
 def get_town(driver):
     town_select_element = driver.find_element(By.ID, "townId")
     town_select = Select(town_select_element)
-    towns = [town_option.text for town_option in town_select.options[1:]]
+    towns = [
+        (town_option.get_attribute("value"), town_option.text)
+        for town_option in town_select.options[1:]
+    ]
     return towns
 
 
@@ -117,7 +140,9 @@ def save_to_csv(data):
 
     with open(csv_file_path, "w", newline="", encoding="utf-8-sig") as file:
         writer = csv.writer(file)
-        writer.writerow(["City", "District", "Town"])
+        writer.writerow(
+            ["ID_City", "City", "ID_District", "District", "ID_Town", "Town"]
+        )
         writer.writerows(data)
 
     print(f"Data saved to: {os.path.abspath(csv_file_path)}")
