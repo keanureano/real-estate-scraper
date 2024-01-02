@@ -3,8 +3,8 @@ import pandas as pd
 
 def main():
     # Assuming you have two CSV files: french.csv and arabic.csv
-    df_french = pd.read_csv("french.csv")
-    df_arabic = pd.read_csv("arabic.csv")
+    df_french = pd.read_csv("output.csv")
+    df_arabic = pd.read_csv("output (1).csv")
 
     # Merge dataframes on ID columns
     df_merged = pd.merge(
@@ -32,7 +32,7 @@ def main():
     df_result = df_result[columns_order]
 
     # Save the result to a new CSV file
-    df_result.to_csv("merged.csv", index=False, encoding="utf-8-sig")
+    df_result.to_csv("final_output.csv", index=False, encoding="utf-8-sig")
 
 
 if __name__ == "__main__":
