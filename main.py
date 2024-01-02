@@ -26,7 +26,7 @@ def get_city_district_town_dataset(driver):
 
     select = Select(cities_element)
 
-    for city_option in select.options[1]:
+    for city_option in select.options:
         city_name = city_option.text
         city_value = city_option.get_attribute("value")
         print(f"Selecting city: {city_value} {city_name}")
