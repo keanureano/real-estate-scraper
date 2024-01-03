@@ -31,7 +31,7 @@ def main():
 
     df_result = df_result[columns_order]
 
-    # Save the result to a new CSV file
+    # Save the result to a new file
     df_result.to_excel("final_output.xlsx", index=False, engine="xlsxwriter")
 
 
