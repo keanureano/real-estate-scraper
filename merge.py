@@ -32,7 +32,7 @@ def main():
     df_result = df_result[columns_order]
 
     # Save the result to a new CSV file
-    df_result.to_csv("final_output.csv", index=False, encoding="utf-8-sig")
+    df_result.to_excel("final_output.xlsx", index=False, engine="xlsxwriter")
 
 
 if __name__ == "__main__":
