@@ -1,6 +1,6 @@
-# Real Estate Region Web Scraper
+# RealEstateScraper
 
-This program is designed to extract both French and Arabic translations of place names from a specific website. It then merges the data based on unique identifiers. Follow the instructions below to set up and run the program.
+RealEstateScraper is a Python application that employs a fork of Selenium for web scraping, extracting place names in French and Arabic from a designated website. The tool integrates Natural Language Processing (NLP) for translating Arabic text into French. By utilizing unique identifiers from the HTML forms, it merges the extracted Arabic and French datasets into a unified table.
 
 ## Installation
 
